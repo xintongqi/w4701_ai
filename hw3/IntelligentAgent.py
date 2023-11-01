@@ -4,23 +4,29 @@ Amy QI, xq2224
 
 from BaseAI import BaseAI
 import time
+import random
 
 class IntelligentAgent(BaseAI):
     start_time = 0
     time_allowed = 0.2
     depth_allowed = 4
 
-    smooth_weight = 0.1
+    smooth_weight = 0.2
     monotonicity_weight = 1
     empty_weight = 1
-    snake_weight = 0.5
+    snake_weight = 1
 
     defaultProbability = 0.9
 
-    snake_weights = [[40, 20, 10, 5],
-                     [15, 10, 5, 2],
-                     [10, 5, 2, 1],
-                     [2, 2, 1, 0.5]]
+    snake_weights = [[64, 32, 16, 8],
+                     [32, 16, 8, 4],
+                     [16, 8, 4, 2],
+                     [8, 4, 2, 1]]
+
+      # snake_weights = [[40, 20, 10, 5],
+      #                [15, 10, 5, 2],
+      #                [10, 5, 2, 1],
+      #                [2, 2, 1, 0.5]]
 
     def __init__(self):
         pass
@@ -51,8 +57,23 @@ class IntelligentAgent(BaseAI):
         snake = 0
         for row in range(len(grid.map)):
             for col in range(len(grid.map[row])):
-                snake += self.snake_weights[col][row] * grid.map[row][col]
+                snake += self.snake_weights[row][col] * grid.map[row][col]
         return snake
+
+    # def heuristic_snake(self, grid):
+    #     score = 0
+    #     for i in range(4):
+    #         for j in range(4):
+    #             tile = grid.map[i][j]
+    #             if tile == 0:
+    #                 continue
+    #             goal_row = tile // 4
+    #             goal_col = tile % 4 - 1 if tile % 4 != 0 else 3
+    #             distance = abs(i - goal_row) + abs(j - goal_col)
+    #             tile_score = tile * (16 - distance)
+    #             score += tile_score
+    #     return score
+
 
     def heuristic(self, grid):
         smoothness = self.heuristic_smoothness(grid)
@@ -112,7 +133,6 @@ class IntelligentAgent(BaseAI):
         best_val, best_move = self.expectiminimax(grid, 0, -float('inf'), float('inf'))
 
         if best_move is None:
-            best_move = grid.getAvailableMoves()[0][0]
-            return best_move
-        else:
-            return best_move
+            best_move = random.choice(grid.getAvailableMoves())[0]
+
+        return best_move
