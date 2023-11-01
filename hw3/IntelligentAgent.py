@@ -11,23 +11,18 @@ class IntelligentAgent(BaseAI):
     time_allowed = 0.2
     depth_allowed = 4
 
-    smooth_weight = 0.2
-    monotonicity_weight = 1
-    empty_weight = 1
+    smooth_weight = 0
+    monotonicity_weight = 0
+    empty_weight = 0
     snake_weight = 1
 
     defaultProbability = 0.9
 
-    snake_weights = [[64, 32, 16, 8],
-                     [32, 16, 8, 4],
-                     [16, 8, 4, 2],
-                     [8, 4, 2, 1]]
-
-      # snake_weights = [[40, 20, 10, 5],
-      #                [15, 10, 5, 2],
-      #                [10, 5, 2, 1],
-      #                [2, 2, 1, 0.5]]
-
+    snake_weights = [[13, 14, 15, 16],
+                     [12, 11, 10, 9],
+                     [5, 6, 7, 8],
+                     [4, 3, 2, 1]]
+    
     def __init__(self):
         pass
 
