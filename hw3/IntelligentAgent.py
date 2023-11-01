@@ -6,6 +6,7 @@ from BaseAI import BaseAI
 import time
 import random
 
+
 class IntelligentAgent(BaseAI):
     start_time = 0
     time_allowed = 0.2
@@ -18,11 +19,11 @@ class IntelligentAgent(BaseAI):
 
     defaultProbability = 0.9
 
-    snake_weights = [[13, 14, 15, 16],
-                     [12, 11, 10, 9],
-                     [5, 6, 7, 8],
-                     [4, 3, 2, 1]]
-    
+    snake_weights = [[32768, 16384, 8192, 4096],
+                     [256, 512, 1024, 2048],
+                     [128, 64, 32, 16],
+                     [1, 2, 4, 8]]
+
     def __init__(self):
         pass
 
@@ -55,21 +56,6 @@ class IntelligentAgent(BaseAI):
                 snake += self.snake_weights[row][col] * grid.map[row][col]
         return snake
 
-    # def heuristic_snake(self, grid):
-    #     score = 0
-    #     for i in range(4):
-    #         for j in range(4):
-    #             tile = grid.map[i][j]
-    #             if tile == 0:
-    #                 continue
-    #             goal_row = tile // 4
-    #             goal_col = tile % 4 - 1 if tile % 4 != 0 else 3
-    #             distance = abs(i - goal_row) + abs(j - goal_col)
-    #             tile_score = tile * (16 - distance)
-    #             score += tile_score
-    #     return score
-
-
     def heuristic(self, grid):
         smoothness = self.heuristic_smoothness(grid)
         monotonicity = self.heuristic_monotonicity(grid)
@@ -100,7 +86,7 @@ class IntelligentAgent(BaseAI):
             return self.heuristic(grid)
 
         left = self.defaultProbability * self.expectmin(grid, depth + 1, alpha, beta, 2)
-        right = (1-self.defaultProbability) * self.expectmin(grid, depth + 1, alpha, beta, 4)
+        right = (1 - self.defaultProbability) * self.expectmin(grid, depth + 1, alpha, beta, 4)
         return (left + right) / 2
 
     def expectmin(self, grid, depth, alpha, beta, tile_value) -> float:
